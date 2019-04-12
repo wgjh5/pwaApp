@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0">
+		<title>myapp</title>
+		<link href="static/manifest.json" rel="manifest" />
+		<style>
+			body, html {
+		        height: 100%;
+		        padding: 0;
+		        margin: 0;
+		        background: #2196f3;
+		    }
+		    .content {
+		        width: 200px;
+		        height: 100px;
+		        position: absolute;
+		        top: 0;
+		        left: 0;
+		        bottom: 0;
+		        right: 0;
+		        margin: auto;
+		        color: #fff;
+		        text-align: center;
+		    }
+		    .text {
+		        height: 30px;
+		        text-align: center;
+		        font-size: 24px;
+		        line-height: 30px;
+		    }
+		    .button {
+		        width: 120px;
+		        height: 40px;
+		        line-height: 40px;
+		        margin: 10px auto 0;
+		        background: #f44336;
+		        border-radius: 8px;
+		        cursor: pointer;
+		        /* display: none; */
+		    }
+		    .button:active {
+		        background: #f51210;
+		    }
+		</style>
+	</head>
+	<body>
+		<div id="app"></div>
+		<div class="content">
+			<div class="text">Hello PWA!</div>
+			<div class="button" id="btn">点击显示横幅</div>
+			<!-- <script src="./src/service-worker.js" type="text/javascript" charset="utf-8"></script> -->
+			<!-- <script src="./static/register.js"></script> -->
+<!-- 			<script type="text/javascript">
+						navigator.serviceWorker.getRegistrations().then(function(registrations) {
+					for (let registration of registrations) {
+						registration.unregister()
+					}
+				})
+				window.addEventListener('load', function(event) {
+					if ('serviceWorker' in window.navigator) {
+						navigator.serviceWorker.register('/sw.js')
+							.then(function(registration) {
+
+								// 注册成功
+								console.log('注册成功 ', registration.scope);
+							})
+							.catch(function(err) {
+
+								// 注册失败:(
+								console.log('注册失败', err);
+							});
+					}
+				});
+		
+			</script> -->
+			<script>
+				var dfdPrompt = null;
+				var button = document.getElementById('btn');
+				window.addEventListener('beforeinstallprompt', function(e) {
+					// 存储事件
+					dfdPrompt = e;
+					// 显示按钮
+					button.style.display = 'block';
+					// 阻止默认事件
+					e.preventDefault();
+					return false;
+				});
+				button.addEventListener('click', function(e) {
+					if (dfdPrompt == null) {
+						return;
+					}
+					// 通过按钮点击事件触发横幅显示
+					dfdPrompt.prompt();
+					// 监控用户的安装行为
+					dfdPrompt.userChoice.then(function(choiceResult) {
+						alert(choiceResult.outcome);
+					});
+					// 隐藏按钮
+					button.style.display = 'none';
+					dfdPrompt = null;
+				});
+			</script>
+
+			<!-- built files will be auto injected -->
+	</body>
+</html>
